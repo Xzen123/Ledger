@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Tasks from "./pages/Tasks.jsx";
 import Shop from "./pages/Shop.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
+import Profile from "./pages/Profile.jsx";
 import Landing from "./pages/Landing.jsx";
 import AppShell from "./components/AppShell.jsx";
 
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/quests" element={<Tasks />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="/" element={<MainRoute />}>
           <Route index element={<Dashboard />} />

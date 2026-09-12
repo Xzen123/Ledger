@@ -54,6 +54,11 @@ function serializeCharacter(user) {
     flags: user.flags || 0,
     isDisabled: Boolean(user.is_disabled),
     disabledReason: user.disabled_reason || null,
+    fullName: user.full_name || "",
+    place: user.place || "",
+    college: user.college || "",
+    age: user.age || null,
+    gender: user.gender || "",
   };
 }
 

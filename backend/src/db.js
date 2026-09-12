@@ -30,6 +30,11 @@ db.exec(`
     attr_creativity INTEGER NOT NULL DEFAULT 0,
     attr_vitality INTEGER NOT NULL DEFAULT 0,
     active_theme TEXT NOT NULL DEFAULT 'default',
+    full_name TEXT,
+    place TEXT,
+    college TEXT,
+    age INTEGER,
+    gender TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
 
@@ -78,6 +83,21 @@ try {
 } catch {}
 try {
   db.exec("ALTER TABLE users ADD COLUMN disabled_reason TEXT;");
+} catch {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN full_name TEXT;");
+} catch {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN place TEXT;");
+} catch {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN college TEXT;");
+} catch {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN age INTEGER;");
+} catch {}
+try {
+  db.exec("ALTER TABLE users ADD COLUMN gender TEXT;");
 } catch {}
 
 try {

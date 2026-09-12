@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Link, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import CharacterPanel from "./CharacterPanel.jsx";
 import TutorialModal from "./TutorialModal.jsx";
 import AccountDisabledModal from "./AccountDisabledModal.jsx";
-import { SwordIcon, GoldCoinIcon, FlameIcon, BookIcon, VolumeOnIcon, VolumeOffIcon, TrophyIcon } from "./Icons.jsx";
+import {
+  SwordIcon,
+  GoldCoinIcon,
+  FlameIcon,
+  BookIcon,
+  VolumeOnIcon,
+  VolumeOffIcon,
+  TrophyIcon,
+  AlertTriangleIcon,
+} from "./Icons.jsx";
 import { isSoundEnabled, toggleSound } from "../lib/sound.js";
 
 const NAV_LINKS = [
@@ -12,6 +21,7 @@ const NAV_LINKS = [
   { to: "/quests", label: "Quests" },
   { to: "/shop", label: "Shop" },
   { to: "/leaderboard", label: "Leaderboard" },
+  { to: "/profile", label: "Profile" },
 ];
 
 export default function AppShell() {
@@ -104,7 +114,7 @@ export default function AppShell() {
                       className="font-bold text-amber-500 flex items-center gap-1 text-[11px]"
                       title={`Sentinel AI Warning: ${character.flags} of 3 strikes before account lock`}
                     >
-                      <span className="animate-pulse">⚠️</span>
+                      <AlertTriangleIcon className="w-3.5 h-3.5 animate-pulse text-amber-500" />
                       <span>{character.flags}/3 Strikes</span>
                     </span>
                   </>
@@ -139,9 +149,13 @@ export default function AppShell() {
             </button>
 
             <div className="flex items-center gap-2 border-l border-hairline pl-3">
-              <span className="hidden lg:inline text-xs font-medium text-mute max-w-[100px] truncate">
-                {character?.username}
-              </span>
+              <Link
+                to="/profile"
+                className="hidden lg:inline text-xs font-medium text-mute hover:text-ink max-w-[120px] truncate transition-colors"
+                title="View & Edit Character Profile"
+              >
+                {character?.fullName || character?.username}
+              </Link>
               <button
                 onClick={logout}
                 className="text-xs text-mute hover:text-clay px-2 py-1.5 rounded-md transition-colors"

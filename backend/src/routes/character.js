@@ -34,4 +34,31 @@ router.put("/theme", (req, res) => {
   res.json({ character: serializeCharacter(user) });
 });
 
+// PUT /api/character/profile
+router.put("/profile", (req, res) => {
+  const { fullName, place, college, age, gender } = req.body || {};
+
+  let parsedAge = null;
+  if (age !== undefined && age !== null && age !== "") {
+    parsedAge = parseInt(age, 10);
+    if (isNaN(parsedAge) || parsedAge < 1 || parsedAge > 120) {
+      return res.status(400).json({ error: "Please enter a valid age (1-120)." });
+    }
+  }
+
+  const cleanName = (fullName || "").trim().slice(0, 50);
+  const cleanPlace = (place || "").trim().slice(0, 50);
+  const cleanCollege = (college || "").trim().slice(0, 80);
+  const cleanGender = (gender || "").trim().slice(0, 30);
+
+  db.prepare(`
+    UPDATE users 
+    SET full_name = ?, place = ?, college = ?, age = ?, gender = ?
+    WHERE id = ?
+  `).run(cleanName, cleanPlace, cleanCollege, parsedAge, cleanGender, req.userId);
+
+  const user = db.prepare("SELECT * FROM users WHERE id = ?").get(req.userId);
+  res.json({ character: serializeCharacter(user) });
+});
+
 module.exports = router;

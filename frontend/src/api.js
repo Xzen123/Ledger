@@ -65,12 +65,15 @@ export const api = {
   getAnalytics: () => request("/tasks/analytics"),
 
   getCharacter: () => request("/character"),
+  updateProfile: (payload) => request("/character/profile", { method: "PUT", body: payload }),
   setTheme: (theme) => request("/character/theme", { method: "PUT", body: { theme } }),
 
   listShopItems: () => request("/shop/items"),
   buyItem: (id) => request(`/shop/buy/${id}`, { method: "POST" }),
 
   getLeaderboard: (period = "daily") => request(`/leaderboard?period=${period}`),
+  getCollegeLeaderboard: (college) =>
+    request(`/leaderboard/college${college ? `?college=${encodeURIComponent(college)}` : ""}`),
   getAuditLogs: () => request("/leaderboard/audit-logs"),
   reportBot: (payload) => request("/leaderboard/report", { method: "POST", body: payload }),
   appealReset: () => request("/tasks/appeal-reset", { method: "POST" }),

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { api } from "../api.js";
 import ProgressBar from "./ProgressBar.jsx";
@@ -15,6 +16,7 @@ import {
   AlertTriangleIcon,
   AttributeIcon,
   BadgeIcon,
+  BuildingIcon,
 } from "./Icons.jsx";
 
 export default function CharacterPanel({ onOpenGuide }) {
@@ -70,12 +72,23 @@ export default function CharacterPanel({ onOpenGuide }) {
               <ShieldIcon className="w-6 h-6" />
             </div>
             <div>
-              <p className="font-display text-base text-ink font-semibold leading-tight truncate max-w-[130px]">
-                {username}
-              </p>
-              <p className="text-[11px] text-mute uppercase tracking-wider font-medium mt-0.5">
-                Level {level} Hero
-              </p>
+              <Link
+                to="/profile"
+                className="font-display text-base text-ink font-semibold leading-tight truncate max-w-[130px] hover:text-indigo transition-colors block"
+                title="Edit Character Profile"
+              >
+                {character.fullName || username}
+              </Link>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-[11px] text-mute uppercase tracking-wider font-medium">
+                  Level {level} Hero
+                </span>
+                {character.college && (
+                  <span className="text-[10px] text-indigo font-medium px-1.5 py-0.5 rounded bg-indigo-soft truncate max-w-[90px]">
+                    {character.college}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 

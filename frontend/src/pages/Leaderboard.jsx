@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "../api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useToast } from "../context/ToastContext.jsx";
 import ReportBotModal from "../components/ReportBotModal.jsx";
+import InviteModal from "../components/InviteModal.jsx";
 import {
   TrophyIcon,
   ShieldIcon,
@@ -13,6 +15,9 @@ import {
   SparklesIcon,
   AttributeIcon,
   QuestScrollIcon,
+  BuildingIcon,
+  UserGroupIcon,
+  MailIcon,
 } from "../components/Icons.jsx";
 
 const PODIUM_COLORS = [
@@ -41,7 +46,10 @@ export default function Leaderboard() {
   const [auditLogs, setAuditLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reportingPlayer, setReportingPlayer] = useState(null);
-  const [activeTab, setActiveTab] = useState("rankings"); // "rankings" | "audit"
+  const [activeTab, setActiveTab] = useState("rankings"); // "rankings" | "colleges" | "audit"
+  const [collegeData, setCollegeData] = useState(null);
+  const [loadingCollege, setLoadingCollege] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   function fetchLeaderboard(selectedPeriod) {
     setLoading(true);
@@ -61,6 +69,15 @@ export default function Leaderboard() {
       .catch(() => {});
   }
 
+  function fetchCollegeLeaderboard() {
+    setLoadingCollege(true);
+    api
+      .getCollegeLeaderboard(character?.college)
+      .then((data) => setCollegeData(data))
+      .catch((err) => console.error(err))
+      .finally(() => setLoadingCollege(false));
+  }
+
   useEffect(() => {
     fetchLeaderboard(period);
   }, [period]);
@@ -68,6 +85,12 @@ export default function Leaderboard() {
   useEffect(() => {
     fetchAuditLogs();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === "colleges") {
+      fetchCollegeLeaderboard();
+    }
+  }, [activeTab, character?.college]);
 
   const topThree = players ? players.slice(0, 3) : [];
   const remainingPlayers = players ? players.slice(3) : [];
@@ -135,6 +158,20 @@ export default function Leaderboard() {
               }`}
             >
               Player Standings
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("colleges");
+                fetchCollegeLeaderboard();
+              }}
+              className={`px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
+                activeTab === "colleges"
+                  ? "bg-surface border-ink text-ink font-semibold"
+                  : "border-transparent text-mute hover:text-ink"
+              }`}
+            >
+              <BuildingIcon className="w-3.5 h-3.5 text-indigo" />
+              <span>College Guilds</span>
             </button>
             <button
               onClick={() => {
@@ -291,8 +328,16 @@ export default function Leaderboard() {
                         >
                           <td className="py-3.5 px-4 font-mono font-bold">
                             {p.rank <= 3 ? (
-                              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-paper border border-hairline font-bold">
-                                {p.rank === 1 ? "🥇" : p.rank === 2 ? "🥈" : "🥉"}
+                              <span
+                                className={`inline-flex items-center justify-center w-6 h-6 rounded-full font-bold text-[11px] ${
+                                  p.rank === 1
+                                    ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/40"
+                                    : p.rank === 2
+                                    ? "bg-slate-400/20 text-slate-700 dark:text-slate-300 border border-slate-400/40"
+                                    : "bg-amber-800/20 text-amber-700 dark:text-amber-500 border border-amber-700/40"
+                                }`}
+                              >
+                                {p.rank}
                               </span>
                             ) : (
                               `#${p.rank}`
@@ -368,6 +413,195 @@ export default function Leaderboard() {
             )}
           </div>
         </>
+      ) : activeTab === "colleges" ? (
+        /* College Guilds & Campus Standings */
+        <div className="space-y-6">
+          {/* 1. Campus Guild Section */}
+          {character?.college ? (
+            <div className="rpg-glass rounded-2xl border-2 border-indigo/30 p-6 sm:p-7 relative overflow-hidden shadow-md">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-hairline">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo/20 flex items-center justify-center text-indigo shadow-xs">
+                    <BuildingIcon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h2 className="font-display text-xl font-bold text-ink flex items-center gap-2">
+                      <span>{character.college} Guild</span>
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo border border-indigo/20">
+                        Campus Chapter
+                      </span>
+                    </h2>
+                    <p className="text-xs text-mute mt-0.5">
+                      {collegeData?.campusMembers?.length || 1} Adventurer{collegeData?.campusMembers?.length === 1 ? "" : "s"} enrolled from this academy.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowInviteModal(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-ink text-paper rounded-xl text-xs font-semibold hover:opacity-90 transition-all shadow-sm shrink-0"
+                >
+                  <MailIcon className="w-4 h-4 text-amber" />
+                  <span>Invite Classmates</span>
+                </button>
+              </div>
+
+              {/* Campus Members Table */}
+              <div className="mt-4">
+                <h3 className="text-xs font-semibold text-ink uppercase tracking-wider mb-3">
+                  Campus Classmate Standings
+                </h3>
+                {loadingCollege ? (
+                  <div className="text-center py-6 text-xs text-mute">Loading campus standings...</div>
+                ) : (collegeData?.campusMembers || []).length === 0 ? (
+                  <div className="text-center py-6 text-xs text-mute">
+                    You are the vanguard of this college! Invite classmates to form a full party.
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead className="text-mute uppercase text-[10px] border-b border-hairline">
+                        <tr>
+                          <th className="py-2.5 px-3">Campus Rank</th>
+                          <th className="py-2.5 px-3">Adventurer</th>
+                          <th className="py-2.5 px-3">Level</th>
+                          <th className="py-2.5 px-3">Quests Completed</th>
+                          <th className="py-2.5 px-3">Streak</th>
+                          <th className="py-2.5 px-3 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-hairline">
+                        {collegeData.campusMembers.map((m) => {
+                          const isCurrentUser = m.id === character.id;
+                          return (
+                            <tr
+                              key={m.id}
+                              className={`hover:bg-paper/40 ${isCurrentUser ? "bg-indigo-500/5 font-medium" : ""}`}
+                            >
+                              <td className="py-2.5 px-3 font-mono font-bold">
+                                {m.rank <= 3 ? (
+                                  <span className="w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] font-bold bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400">
+                                    {m.rank}
+                                  </span>
+                                ) : (
+                                  `#${m.rank}`
+                                )}
+                              </td>
+                              <td className="py-2.5 px-3">
+                                <span className="font-semibold text-ink">{m.fullName || m.username}</span>
+                                {isCurrentUser && (
+                                  <span className="text-[10px] text-indigo ml-1.5 px-1.5 py-0.5 rounded bg-indigo-soft">
+                                    You
+                                  </span>
+                                )}
+                              </td>
+                              <td className="py-2.5 px-3 text-indigo font-medium">Lvl {m.level}</td>
+                              <td className="py-2.5 px-3 font-display font-semibold">{m.scoreLabel}</td>
+                              <td className="py-2.5 px-3">{m.streak}d</td>
+                              <td className="py-2.5 px-3 text-right">
+                                {!isCurrentUser && (
+                                  <button
+                                    onClick={() => setReportingPlayer(m)}
+                                    className="px-2 py-0.5 rounded border border-hairline hover:bg-rose-500/10 hover:text-rose-400 text-mute text-[11px]"
+                                  >
+                                    Report
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="rpg-glass rounded-2xl border-2 border-dashed border-hairline p-8 text-center space-y-3">
+              <BuildingIcon className="w-10 h-10 text-indigo mx-auto opacity-70" />
+              <h3 className="font-display text-lg font-bold text-ink">You haven&apos;t joined a Campus Guild yet</h3>
+              <p className="text-xs text-mute max-w-md mx-auto">
+                Add your College or University to your Adventurer Profile to compete on your campus leaderboard and represent your school in the Inter-College League!
+              </p>
+              <Link
+                to="/profile"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-ink text-paper rounded-xl text-xs font-semibold hover:opacity-90 transition-all shadow-sm"
+              >
+                <span>Edit Profile & Add College</span>
+              </Link>
+            </div>
+          )}
+
+          {/* 2. Inter-College League Table */}
+          <div className="rpg-glass rounded-2xl border border-hairline overflow-hidden shadow-sm">
+            <div className="p-5 border-b border-hairline flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <TrophyIcon className="w-5 h-5 text-amber" />
+                <h3 className="font-display text-base font-bold text-ink">Inter-College Realm Championship</h3>
+              </div>
+              <span className="text-xs text-mute font-mono">Guild vs Guild</span>
+            </div>
+
+            {loadingCollege ? (
+              <div className="p-8 text-center text-xs text-mute">Loading inter-college rankings...</div>
+            ) : (collegeData?.collegeGuilds || []).length === 0 ? (
+              <div className="p-8 text-center text-xs text-mute">
+                No college guilds registered yet. Set your college in your profile to be the founding pioneer!
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-paper/60 text-mute uppercase text-[10px] border-b border-hairline">
+                    <tr>
+                      <th className="py-3 px-4">Rank</th>
+                      <th className="py-3 px-4">College Guild</th>
+                      <th className="py-3 px-4">Active Members</th>
+                      <th className="py-3 px-4">Avg Hero Level</th>
+                      <th className="py-3 px-4">Total Quests Conquered</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-hairline">
+                    {collegeData.collegeGuilds.map((cg) => {
+                      const isMyCollege = character?.college && character.college.toLowerCase().trim() === cg.college.toLowerCase().trim();
+                      return (
+                        <tr
+                          key={cg.college}
+                          className={`hover:bg-paper/40 transition-colors ${isMyCollege ? "bg-indigo-500/10 font-semibold" : ""}`}
+                        >
+                          <td className="py-3 px-4 font-mono font-bold">
+                            {cg.rank <= 3 ? (
+                              <span className="w-6 h-6 rounded-full inline-flex items-center justify-center bg-paper border border-hairline font-bold text-ink">
+                                {cg.rank}
+                              </span>
+                            ) : (
+                              `#${cg.rank}`
+                            )}
+                          </td>
+                          <td className="py-3 px-4 flex items-center gap-2">
+                            <BuildingIcon className="w-4 h-4 text-indigo shrink-0" />
+                            <span className="text-ink font-semibold">{cg.college}</span>
+                            {isMyCollege && (
+                              <span className="text-[10px] text-indigo font-normal px-2 py-0.5 rounded-full bg-indigo-soft">
+                                Your Guild
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-mute">{cg.memberCount} Adventurers</td>
+                          <td className="py-3 px-4 text-indigo font-mono">Lvl {cg.avgLevel}</td>
+                          <td className="py-3 px-4 font-display font-bold text-ink text-sm">
+                            {cg.totalQuests} Quests
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
       ) : (
         /* Sentinel AI Audit Log Feed */
         <div className="rounded-2xl border border-hairline bg-surface/70 backdrop-blur-md p-6 space-y-4">
@@ -435,6 +669,13 @@ export default function Leaderboard() {
           showSuccess("Report Logged", `Sentinel AI investigated ${report.targetUsername}`);
           fetchLeaderboard(period);
         }}
+      />
+
+      {/* Invite & Share Stats Modal */}
+      <InviteModal
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        character={character}
       />
     </div>
   );

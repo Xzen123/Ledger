@@ -187,4 +187,81 @@ router.post("/report", requireAuth, (req, res) => {
   });
 });
 
+// GET /api/leaderboard/college
+router.get("/college", (req, res) => {
+  const targetCollege = (req.query.college || "").trim();
+
+  // 1. All Colleges aggregated ranking
+  const collegeRows = db
+    .prepare(`
+      SELECT 
+        u.college,
+        COUNT(DISTINCT u.id) as member_count,
+        ROUND(AVG(u.level), 1) as avg_level,
+        COUNT(t.id) as total_quests
+      FROM users u
+      LEFT JOIN tasks t ON t.user_id = u.id AND t.status = 'completed'
+      WHERE u.college IS NOT NULL AND TRIM(u.college) != ''
+      GROUP BY LOWER(TRIM(u.college))
+      ORDER BY total_quests DESC, member_count DESC, avg_level DESC
+      LIMIT 50
+    `)
+    .all();
+
+  const collegeGuilds = collegeRows.map((r, idx) => ({
+    rank: idx + 1,
+    college: r.college,
+    memberCount: r.member_count,
+    avgLevel: r.avg_level || 1.0,
+    totalQuests: r.total_quests || 0,
+  }));
+
+  // 2. Intra-college member roster if a college is specified
+  let campusMembers = [];
+  if (targetCollege) {
+    const memberRows = db
+      .prepare(`
+        SELECT 
+          u.id, u.username, u.full_name, u.college, u.place, u.level, u.xp, u.gold, u.current_streak, u.active_theme,
+          u.attr_intellect, u.attr_strength, u.attr_discipline, u.attr_creativity, u.attr_vitality,
+          u.flags, u.is_disabled,
+          COUNT(t.id) as quests_completed
+        FROM users u
+        LEFT JOIN tasks t ON t.user_id = u.id AND t.status = 'completed'
+        WHERE LOWER(TRIM(u.college)) = LOWER(TRIM(?))
+        GROUP BY u.id
+        ORDER BY quests_completed DESC, u.level DESC, u.xp DESC
+        LIMIT 50
+      `)
+      .all(targetCollege);
+
+    campusMembers = memberRows.map((r, idx) => ({
+      rank: idx + 1,
+      id: r.id,
+      username: r.username,
+      fullName: r.full_name || "",
+      place: r.place || "",
+      college: r.college,
+      level: r.level,
+      xp: r.xp,
+      gold: r.gold,
+      streak: r.current_streak,
+      theme: r.active_theme || "default",
+      topAttribute: getTopAttribute(r),
+      score: r.quests_completed,
+      scoreLabel: `${r.quests_completed} quest${r.quests_completed === 1 ? "" : "s"}`,
+      flags: r.flags || 0,
+      isDisabled: Boolean(r.is_disabled),
+      securityStatus: r.is_disabled ? "banned" : r.flags > 0 ? "flagged" : "verified",
+      statusLabel: r.is_disabled ? "Banned" : r.flags > 0 ? `⚠️ Flagged (${r.flags}/3)` : "Verified Human",
+    }));
+  }
+
+  res.json({
+    collegeGuilds,
+    campusCollege: targetCollege || null,
+    campusMembers,
+  });
+});
+
 module.exports = router;
