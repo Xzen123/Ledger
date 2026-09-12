@@ -120,5 +120,3 @@ backend's `/api` URL.
    - Record: user signup/login $\to$ adding a quest $\to$ completing a quest $\to$ level-up celebration $\to$ **page refresh to prove database persistence**.
    - Host the video publicly on GitHub Releases, YouTube (unlisted/public), Google Drive (public access), or in the repo.
 
-
-<!-- stage 119 -->
