@@ -514,5 +514,3 @@ export default function Tasks() {
     </div>
   );
 }
-
-/* commit_stage_117_ayush */

@@ -439,5 +439,3 @@ export default function Leaderboard() {
     </div>
   );
 }
-
-/* commit_stage_103_ayush */

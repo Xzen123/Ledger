@@ -13,5 +13,3 @@ export function attributeTier(points) {
   const progress = (points % 10) / 10;
   return { tier, progress, pointsIntoTier: points % 10 };
 }
-
-/* commit_stage_12_ayush */

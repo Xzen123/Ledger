@@ -52,5 +52,3 @@ function isStreakBroken(lastActiveDate) {
 }
 
 module.exports = { todayISO, registerActivity, isStreakAtRisk, isStreakBroken };
-
-/* commit_stage_81_xzen */

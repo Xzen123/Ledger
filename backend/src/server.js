@@ -45,5 +45,3 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Life RPG API listening on port ${PORT}`);
 });
-
-/* commit_stage_100_xzen */

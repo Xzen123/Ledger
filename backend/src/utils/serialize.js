@@ -83,5 +83,3 @@ function serializeTask(task) {
 }
 
 module.exports = { serializeCharacter, serializeTask };
-
-/* commit_stage_9_xzen */

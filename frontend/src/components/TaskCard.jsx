@@ -242,5 +242,3 @@ export default function TaskCard({ task, onComplete, onUpdate, onDelete, complet
     </motion.li>
   );
 }
-
-/* commit_stage_112_ayush */

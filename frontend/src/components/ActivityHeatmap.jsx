@@ -298,5 +298,3 @@ export default function ActivityHeatmap({ analytics, loading }) {
     </div>
   );
 }
-
-/* commit_stage_113_ayush */

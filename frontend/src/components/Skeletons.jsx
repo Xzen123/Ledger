@@ -30,5 +30,3 @@ export function TaskCardSkeleton() {
     </div>
   );
 }
-
-/* commit_stage_22_ayush */

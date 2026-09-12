@@ -4,5 +4,3 @@ export default {
     autoprefixer: {},
   },
 };
-
-/* commit_stage_6_ayush */

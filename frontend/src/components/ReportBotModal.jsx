@@ -178,5 +178,3 @@ export default function ReportBotModal({ targetPlayer, isOpen, onClose, onReport
     </AnimatePresence>
   );
 }
-
-/* commit_stage_106_ayush */

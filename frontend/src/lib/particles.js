@@ -79,5 +79,3 @@ export function triggerParticles({ origin = { x: window.innerWidth / 2, y: windo
 
   render();
 }
-
-/* commit_stage_73_ayush */

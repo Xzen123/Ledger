@@ -507,5 +507,3 @@ export default function Landing() {
     </div>
   );
 }
-
-/* commit_stage_80_ayush */

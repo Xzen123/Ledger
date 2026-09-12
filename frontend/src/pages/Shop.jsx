@@ -154,5 +154,3 @@ export default function Shop() {
     </div>
   );
 }
-
-/* commit_stage_62_ayush */

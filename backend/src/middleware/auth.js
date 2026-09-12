@@ -33,5 +33,3 @@ function requireAuth(req, res, next) {
 }
 
 module.exports = { requireAuth };
-
-/* commit_stage_92_xzen */

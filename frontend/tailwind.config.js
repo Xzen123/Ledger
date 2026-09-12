@@ -34,5 +34,3 @@ export default {
   },
   plugins: [],
 };
-
-/* commit_stage_6_ayush */

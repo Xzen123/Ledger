@@ -162,5 +162,3 @@ export default function Signup() {
     </div>
   );
 }
-
-/* commit_stage_32_ayush */

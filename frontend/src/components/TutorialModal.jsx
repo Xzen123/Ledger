@@ -292,5 +292,3 @@ export default function TutorialModal({ isOpen, onClose }) {
     </AnimatePresence>
   );
 }
-
-/* commit_stage_60_ayush */

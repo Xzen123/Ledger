@@ -128,5 +128,3 @@ if (itemCount === 0) {
 
 module.exports = db;
 
-
-/* commit_stage_115_xzen */

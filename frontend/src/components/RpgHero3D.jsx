@@ -403,5 +403,3 @@ export default function RpgHero3D() {
     </div>
   );
 }
-
-/* commit_stage_71_ayush */

@@ -19,5 +19,3 @@ export default function ProgressBar({ value, max, colorClass = "bg-indigo", trac
     </div>
   );
 }
-
-/* commit_stage_25_ayush */

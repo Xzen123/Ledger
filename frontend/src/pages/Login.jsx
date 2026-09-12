@@ -147,5 +147,3 @@ export default function Login() {
     </div>
   );
 }
-
-/* commit_stage_30_ayush */

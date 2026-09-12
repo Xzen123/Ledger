@@ -14,5 +14,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-/* commit_stage_14_ayush */

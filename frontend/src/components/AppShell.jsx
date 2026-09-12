@@ -182,5 +182,3 @@ export default function AppShell() {
     </div>
   );
 }
-
-/* commit_stage_118_ayush */

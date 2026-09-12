@@ -14,5 +14,3 @@ export default function ErrorBanner({ message, onDismiss }) {
     </div>
   );
 }
-
-/* commit_stage_23_ayush */

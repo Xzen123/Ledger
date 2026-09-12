@@ -89,5 +89,3 @@ export default function LiveLeaderboardWidget() {
     </div>
   );
 }
-
-/* commit_stage_107_ayush */

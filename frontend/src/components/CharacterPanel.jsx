@@ -267,5 +267,3 @@ export default function CharacterPanel({ onOpenGuide }) {
     </div>
   );
 }
-
-/* commit_stage_35_ayush */

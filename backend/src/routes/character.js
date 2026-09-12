@@ -35,5 +35,3 @@ router.put("/theme", (req, res) => {
 });
 
 module.exports = router;
-
-/* commit_stage_27_xzen */

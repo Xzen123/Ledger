@@ -60,5 +60,3 @@ export default function LevelUpModal({ newLevel, onClose }) {
     </AnimatePresence>
   );
 }
-
-/* commit_stage_52_ayush */

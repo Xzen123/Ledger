@@ -116,5 +116,3 @@ export default function GoogleAuthButton({ onAuthSuccess, onError, disabled }) {
     </div>
   );
 }
-
-/* commit_stage_75_ayush */

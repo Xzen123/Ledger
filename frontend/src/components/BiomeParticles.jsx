@@ -168,5 +168,3 @@ export default function BiomeParticles({ activeBiome = 1 }) {
     />
   );
 }
-
-/* commit_stage_79_ayush */
