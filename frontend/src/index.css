@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+.theme-default {
+  --color-paper: #F7F6F1;
+  --color-surface: #FFFFFF;
+  --color-ink: #14171A;
+  --color-mute: #626B66;
+  --color-hairline: #E2DFD4;
+  --color-indigo: #4A5580;
+  --color-indigo-soft: #E3E7F4;
+  --color-amber: #B88232;
+  --color-amber-soft: #F6EBD5;
+  --color-moss: #3E775B;
+  --color-moss-soft: #DCEDE4;
+  --color-clay: #B64D35;
+  --color-clay-soft: #F6DFD7;
+  --color-glow: rgba(74, 85, 128, 0.12);
+}
+
+.theme-slate {
+  --color-paper: #090D14;
+  --color-surface: #121927;
+  --color-ink: #F1F5F9;
+  --color-mute: #8E9FB5;
+  --color-hairline: #222E42;
+  --color-indigo: #38BDF8;
+  --color-indigo-soft: #142236;
+  --color-amber: #F59E0B;
+  --color-amber-soft: #2B2113;
+  --color-moss: #10B981;
+  --color-moss-soft: #122820;
+  --color-clay: #F43F5E;
+  --color-clay-soft: #2E151B;
+  --color-glow: rgba(56, 189, 248, 0.15);
+}
+
+.theme-forest {
+  --color-paper: #06110B;
+  --color-surface: #0E1F16;
+  --color-ink: #ECFDF5;
+  --color-mute: #7BA890;
+  --color-hairline: #183324;
+  --color-indigo: #34D399;
+  --color-indigo-soft: #112A1D;
+  --color-amber: #EAB308;
+  --color-amber-soft: #26210E;
+  --color-moss: #22C55E;
+  --color-moss-soft: #102C1B;
+  --color-clay: #F87171;
+  --color-clay-soft: #281414;
+  --color-glow: rgba(52, 211, 153, 0.15);
+}
+
+.theme-ember {
+  --color-paper: #120907;
+  --color-surface: #1E120D;
+  --color-ink: #FFF7ED;
+  --color-mute: #B38E83;
+  --color-hairline: #351F17;
+  --color-indigo: #FB923C;
+  --color-indigo-soft: #291711;
+  --color-amber: #F97316;
+  --color-amber-soft: #30190D;
+  --color-moss: #4ADE80;
+  --color-moss-soft: #162619;
+  --color-clay: #EF4444;
+  --color-clay-soft: #331411;
+  --color-glow: rgba(251, 146, 60, 0.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Ambient RPG backdrop illumination */
+.ambient-glow {
+  background: radial-gradient(circle at 50% 0%, var(--color-glow) 0%, transparent 60%);
+}
+
+/* Glassmorphism utility */
+.rpg-glass {
+  background-color: var(--color-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-hairline);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Visible keyboard focus */
+:focus-visible {
+  outline: 2px solid var(--color-indigo, #454F78);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-hairline) 25%, var(--color-surface) 37%, var(--color-hairline) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shine 1.4s ease infinite;
+}
+
+@keyframes skeleton-shine {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Glowing cosmetic aura */
+.cosmetic-focus-aura {
+  box-shadow: 0 0 30px 4px rgba(184, 130, 50, 0.3), 0 0 12px 2px rgba(74, 85, 128, 0.35);
+  border-color: rgba(184, 130, 50, 0.7) !important;
+  animation: aura-pulse 3s ease-in-out infinite;
+}
+
+@keyframes aura-pulse {
+  0%, 100% {
+    box-shadow: 0 0 25px 3px rgba(184, 130, 50, 0.25), 0 0 10px 1px rgba(74, 85, 128, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px 6px rgba(184, 130, 50, 0.4), 0 0 16px 3px rgba(74, 85, 128, 0.45);
+  }
+}
+
+/* Flame flicker animation */
+.flame-flicker {
+  display: inline-block;
+  animation: flame 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes flame {
+  0% { transform: scale(1) rotate(-2deg); filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.4)); }
+  100% { transform: scale(1.12) rotate(3deg); filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.8)); }
+}
+
+/* Gold shimmer effect */
+.gold-shimmer {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Scrollytelling snap layout */
+.scrolly-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  height: 100vh;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scrolly-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Walking character bounce */
+.hero-sprite-walk {
+  animation: sprite-step 0.45s infinite alternate ease-in-out;
+}
+
+@keyframes sprite-step {
+  0% { transform: translateY(0px) rotate(-1deg); }
+  100% { transform: translateY(-4px) rotate(2deg); }
+}
+
+/* Glowing sword slash trail animation */
+.sword-slash-arc {
+  transform-origin: 20% 80%;
+  animation: sword-slash 2.6s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes sword-slash {
+  0%, 15% {
+    transform: rotate(-35deg) scale(0.9);
+    opacity: 0.3;
+    filter: drop-shadow(0 0 2px var(--color-indigo));
+  }
+  30% {
+    transform: rotate(65deg) scale(1.15);
+    opacity: 1;
+    filter: drop-shadow(0 0 16px #F59E0B) drop-shadow(0 0 30px #38BDF8);
+  }
+  45%, 100% {
+    transform: rotate(75deg) scale(1);
+    opacity: 0;
+    filter: drop-shadow(0 0 0px transparent);
+  }
+}
+
+/* Portal vortex warp animation */
+.portal-warp-active {
+  animation: portal-warp 0.85s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+@keyframes portal-warp {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(0px);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.4) rotate(360deg);
+    filter: blur(8px) brightness(2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.01) rotate(720deg);
+    filter: blur(25px) brightness(4);
+    opacity: 0;
+  }
+}
+
+
+/* commit_stage_13_ayush */
