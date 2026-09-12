@@ -86,6 +86,9 @@ Forge your character, complete real-world quests, and build your legend!`;
 
         {/* Modal Container */}
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="summon-title"
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -99,7 +102,7 @@ Forge your character, complete real-world quests, and build your legend!`;
                 <MailIcon className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-display text-lg sm:text-xl text-ink font-semibold">
+                <h3 id="summon-title" className="font-display text-lg sm:text-xl text-ink font-semibold">
                   Summon Classmates & Share Stats
                 </h3>
                 <p className="text-xs text-mute mt-0.5">

@@ -26,15 +26,21 @@ export function AuthProvider({ children }) {
       });
   }, [refreshCharacter]);
 
-  const login = useCallback(async (payload) => {
-    const data = await api.login(payload);
+  const login = useCallback(async (payload, maybePassword) => {
+    const creds =
+      typeof payload === "string" ? { username: payload, password: maybePassword } : payload;
+    const data = await api.login(creds);
     setToken(data.token);
     setCharacter(data.character);
     setStatus("authed");
   }, []);
 
-  const signup = useCallback(async (payload) => {
-    const data = await api.signup(payload);
+  const signup = useCallback(async (payload, maybeEmail, maybePassword) => {
+    const body =
+      typeof payload === "string"
+        ? { username: payload, email: maybeEmail, password: maybePassword }
+        : payload;
+    const data = await api.signup(body);
     setToken(data.token);
     setCharacter(data.character);
     setStatus("authed");

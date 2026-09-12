@@ -20,7 +20,7 @@ export default function Login() {
     setError("");
     setSubmitting(true);
     try {
-      await login(form.username, form.password);
+      await login(form);
       navigate("/");
     } catch (err) {
       setError(err.message);

@@ -30,6 +30,9 @@ export default function AccountDisabledModal({ isOpen, reason, flags = 4, onRest
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <motion.div
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="suspended-title"
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9 }}
@@ -44,7 +47,7 @@ export default function AccountDisabledModal({ isOpen, reason, flags = 4, onRest
             <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/30">
               Sentinel Anti-Cheat Enforcement
             </span>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink font-bold tracking-tight">
+            <h2 id="suspended-title" className="font-display text-2xl sm:text-3xl text-ink font-bold tracking-tight">
               Account Suspended
             </h2>
             <p className="text-xs sm:text-sm text-mute leading-relaxed">

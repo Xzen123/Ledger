@@ -37,7 +37,9 @@ export default function LevelUpModal({ newLevel, onClose }) {
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-xs text-mute tracking-wide mb-2">Level up</p>
+            <h2 id="levelup-heading" className="text-xs text-mute tracking-wide mb-2 uppercase font-semibold">
+              Level up
+            </h2>
             <motion.p
               className="font-display text-7xl tabular-nums"
               initial={{ scale: 0.6 }}
