@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "/api";
+const rawBase = (import.meta.env.VITE_API_URL || "/api").trim().replace(/\/+$/, "");
+const BASE_URL = rawBase === "/api" || rawBase.endsWith("/api") ? rawBase : `${rawBase}/api`;
 const TOKEN_KEY = "liferpg_token";
 
 export function getToken() {
